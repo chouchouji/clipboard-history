@@ -1,0 +1,8 @@
+.vscode
+.github
+biome.json
+tsconfig.json
+*.yaml
+**/*.ts
+.gitignore
+**/*.map
