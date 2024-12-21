@@ -4,6 +4,59 @@ import ClipboardWatcher from './watch';
 
 const clipboardWatcher = new ClipboardWatcher();
 
+let completionProvider: vscode.Disposable | undefined;
+
+function registerCompletionProvider(
+  context: vscode.ExtensionContext,
+  triggerCharacter: string,
+  workspaceName: string,
+) {
+  if (completionProvider) {
+    completionProvider.dispose();
+  }
+
+  completionProvider = vscode.languages.registerCompletionItemProvider(
+    '*',
+    {
+      provideCompletionItems(
+        _document: vscode.TextDocument,
+        position: vscode.Position,
+      ) {
+        const prevPosition: vscode.Position = new vscode.Position(
+          Math.max(position.line, 0),
+          Math.max(position.character - triggerCharacter.length, 0),
+        );
+
+        const historyList =
+          context.workspaceState.get<History[]>(workspaceName) ?? [];
+        if (!historyList.length) {
+          vscode.window.showWarningMessage(
+            vscode.l10n.t('No any content to select'),
+          );
+          return;
+        }
+
+        const completeItems = historyList.map(({ text }) => {
+          return {
+            ...new vscode.CompletionItem(
+              text,
+              vscode.CompletionItemKind.Method,
+            ),
+            additionalTextEdits: [
+              vscode.TextEdit.delete(new vscode.Range(prevPosition, position)),
+            ],
+          };
+        });
+
+        return completeItems;
+      },
+    },
+    triggerCharacter,
+  );
+
+  context.subscriptions.push(completionProvider);
+}
+
 export function activate(context: vscode.ExtensionContext) {
   const workspaceName = vscode.workspace.name;
   if (!workspaceName) {
@@ -27,6 +80,8 @@ export function activate(context: vscode.ExtensionContext) {
 
     await context.workspaceState.update(workspaceName, historyStack);
   });
+
+  registerCompletionProvider(context, triggerCharacter, workspaceName);
 
   context.subscriptions.push(
     vscode.workspace.onDidChangeConfiguration(async (event) => {
@@ -66,50 +121,10 @@ export function activate(context: vscode.ExtensionContext) {
           .get<string>('triggerCharacter');
         if (defaultTriggerCharacter) {
           triggerCharacter = defaultTriggerCharacter;
+          registerCompletionProvider(context, triggerCharacter, workspaceName);
         }
       }
     }),
-    vscode.languages.registerCompletionItemProvider(
-      '*',
-      {
-        provideCompletionItems(
-          _document: vscode.TextDocument,
-          position: vscode.Position,
-        ) {
-          const prevPosition: vscode.Position = new vscode.Position(
-            // We do this, to prevent invalid positions, as positions start from 0.
-            Math.max(position.line, 0),
-            Math.max(position.character - triggerCharacter.length, 0),
-          );
-
-          const historyList =
-            context.workspaceState.get<History[]>(workspaceName) ?? [];
-          if (!historyList.length) {
-            vscode.window.showWarningMessage(
-              vscode.l10n.t('No any content to select'),
-            );
-            return;
-          }
-
-          const completeItems = historyList.map(({ text }) => {
-            return {
-              ...new vscode.CompletionItem(
-                text,
-                vscode.CompletionItemKind.Method,
-              ),
-              additionalTextEdits: [
-                vscode.TextEdit.delete(
-                  new vscode.Range(prevPosition, position),
-                ),
-              ],
-            };
-          });
-
-          return completeItems;
-        },
-      },
-      triggerCharacter,
-    ),
     vscode.commands.registerCommand(
       'clipboard-history.openClipboardHistory',
       async () => {
