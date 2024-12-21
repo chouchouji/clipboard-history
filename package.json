@@ -1,7 +1,7 @@
 {
   "name": "clipboard-history",
   "displayName": "Clipboard History",
-  "description": "",
+  "description": "Clipboard history manager",
   "icon": "resources/logo.png",
   "version": "0.0.0",
   "engines": {
@@ -23,11 +23,33 @@
   "bugs": {
     "url": "https://github.com/chouchouji/clipboard-history/issues"
   },
-  "keywords": [
-  ],
+  "keywords": [],
   "homepage": "https://github.com/chouchouji/clipboard-history",
   "main": "./dist/extension.js",
   "contributes": {
+    "commands": [
+      {
+        "command": "clipboard-history.openClipboardHistory",
+        "title": "%openClipboardHistory%"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "clipboard-history.openClipboardHistory",
+          "when": "true",
+          "group": "navigation"
+        }
+      ]
+    },
+    "keybindings":[
+      {
+        "command": "clipboard-history.openClipboardHistory",
+        "key": "ctrl+shift+v",
+        "mac": "cmd+shift+v",
+        "when": "editorTextFocus"
+      }
+    ]
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm exec nano-staged --allow-empty",
