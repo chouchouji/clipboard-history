@@ -1,11 +1,11 @@
 import * as vscode from 'vscode';
 
 export default class ClipboardWatcher {
-  private interval: number;
+  private interval = 500;
   private lastClipboardText: string | undefined = undefined;
   private intervalId: NodeJS.Timeout | string | number | undefined = undefined;
 
-  constructor(interval = 500) {
+  setInterval(interval: number) {
     this.interval = interval;
   }
 

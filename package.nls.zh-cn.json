@@ -1,3 +1,7 @@
 {
-    "openClipboardHistory": "查看剪切板历史"
+    "openClipboardHistory": "查看剪切板历史",
+    "triggerCharacter": "触发补全下拉框的字符。",
+    "clipboardHistory": "剪切板历史",
+    "pollingInterval": "轮询间隔，单位毫秒",
+    "completionItemCount": "要存储的剪贴板项数量，默认值，最小值和最大值分别是10，1，100。"
 }

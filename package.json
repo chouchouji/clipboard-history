@@ -23,7 +23,7 @@
   "bugs": {
     "url": "https://github.com/chouchouji/clipboard-history/issues"
   },
-  "keywords": [],
+  "keywords": ["clipboard", "copy", "paste", "manage"],
   "homepage": "https://github.com/chouchouji/clipboard-history",
   "main": "./dist/extension.js",
   "contributes": {
@@ -33,6 +33,30 @@
         "title": "%openClipboardHistory%"
       }
     ],
+    "configuration": {
+      "title": "%clipboardHistory%",
+      "properties": {
+        "clipboard-history.pollingInterval": {
+          "type": "number",
+          "default": 500,
+          "minimum": 200,
+          "maximum": 86400000,
+          "description": "%pollingInterval%"
+        },
+        "clipboard-history.completionItemCount": {
+          "type": "number",
+          "default": 10,
+          "minimum": 1,
+          "maximum": 100,
+          "description": "%completionItemCount%"
+        },
+        "clipboard-history.triggerCharacter": {
+          "type": "string",
+          "default": "%",
+          "description": "%triggerCharacter%"
+        }
+      }
+    },
     "menus": {
       "editor/context": [
         {

@@ -1,3 +1,7 @@
 {
-    "openClipboardHistory": "Open Clipboard History"
+    "openClipboardHistory": "Open Clipboard History",
+    "triggerCharacter": "The character that triggers the completion dropdown.",
+    "clipboardHistory": "Clipboard History",
+    "pollingInterval": "Polling Interval (ms)",
+    "completionItemCount": "The number of clipboard items to store. The default value is 10, with a minimum of 1 and a maximum of 100."
 }
