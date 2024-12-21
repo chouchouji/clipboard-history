@@ -7,7 +7,9 @@ const clipboardWatcher = new ClipboardWatcher();
 export function activate(context: vscode.ExtensionContext) {
   const workspaceName = vscode.workspace.name;
   if (!workspaceName) {
-    vscode.window.showWarningMessage(vscode.l10n.t('No any applicable workspace name'))
+    vscode.window.showWarningMessage(
+      vscode.l10n.t('No any applicable workspace name'),
+    );
     return;
   }
 
@@ -27,13 +29,23 @@ export function activate(context: vscode.ExtensionContext) {
   });
 
   context.subscriptions.push(
-    vscode.workspace.onDidChangeConfiguration((event) => {
+    vscode.workspace.onDidChangeConfiguration(async (event) => {
       if (event.affectsConfiguration('clipboard-history.completionItemCount')) {
         const defaultCompletionItemCount = vscode.workspace
           .getConfiguration('clipboard-history')
           .get<number>('completionItemCount');
         if (defaultCompletionItemCount) {
           completionItemCount = defaultCompletionItemCount;
+        }
+
+        const historyStack =
+          context.workspaceState.get<History[]>(workspaceName) ?? [];
+        if (historyStack.length > completionItemCount) {
+          while (historyStack.length > completionItemCount) {
+            historyStack.pop();
+          }
+
+          await context.workspaceState.update(workspaceName, historyStack);
         }
       }
     }),
@@ -112,7 +124,9 @@ export function activate(context: vscode.ExtensionContext) {
 
         const activeTextEditor = vscode.window.activeTextEditor;
         if (!activeTextEditor) {
-          vscode.window.showInformationMessage(vscode.l10n.t('No active editor found'));
+          vscode.window.showInformationMessage(
+            vscode.l10n.t('No active editor found'),
+          );
           return;
         }
 
