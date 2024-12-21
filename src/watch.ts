@@ -19,7 +19,7 @@ export default class ClipboardWatcher {
           await cb(clipboardText);
         }
       } catch (error) {
-        vscode.window.showErrorMessage('Read clipboard text error');
+        // ignore error
       }
     }, this.interval);
   }
