@@ -23,9 +23,17 @@
   "bugs": {
     "url": "https://github.com/chouchouji/clipboard-history/issues"
   },
-  "keywords": ["clipboard", "copy", "paste", "manage"],
+  "keywords": [
+    "clipboard",
+    "copy",
+    "paste",
+    "manage"
+  ],
   "homepage": "https://github.com/chouchouji/clipboard-history",
   "main": "./dist/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
   "contributes": {
     "commands": [
       {
@@ -58,6 +66,12 @@
       }
     },
     "menus": {
+      "commandPalette": [
+        {
+          "command": "clipboard-history.openClipboardHistory",
+          "when": "false"
+        }
+      ],
       "editor/context": [
         {
           "command": "clipboard-history.openClipboardHistory",
@@ -66,7 +80,7 @@
         }
       ]
     },
-    "keybindings":[
+    "keybindings": [
       {
         "command": "clipboard-history.openClipboardHistory",
         "key": "ctrl+shift+v",
