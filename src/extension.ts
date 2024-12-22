@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { EXTENSION_NAME } from './constants';
 import type { History } from './types';
 import { deduplicateClipboardHistory } from './utils';
 import ClipboardWatcher from './watch';
@@ -10,7 +11,6 @@ let completionProvider: vscode.Disposable | undefined;
 function registerCompletionProvider(
   context: vscode.ExtensionContext,
   triggerCharacter: string,
-  workspaceName: string,
 ) {
   if (completionProvider) {
     completionProvider.dispose();
@@ -29,7 +29,7 @@ function registerCompletionProvider(
         );
 
         const historyList =
-          context.workspaceState.get<History[]>(workspaceName) ?? [];
+          context.globalState.get<History[]>(EXTENSION_NAME) ?? [];
         if (!historyList.length) {
           vscode.window.showWarningMessage(
             vscode.l10n.t('No any content to select'),
@@ -57,20 +57,12 @@ function registerCompletionProvider(
 }
 
 export function activate(context: vscode.ExtensionContext) {
-  const workspaceName = vscode.workspace.name;
-  if (!workspaceName) {
-    vscode.window.showWarningMessage(
-      vscode.l10n.t('No any applicable workspace name'),
-    );
-    return;
-  }
-
   let triggerCharacter = '%';
   let completionItemCount = 10;
 
   clipboardWatcher.watchClipboard(async (clipboardText: string) => {
     const historyStack =
-      context.workspaceState.get<History[]>(workspaceName) ?? [];
+      context.globalState.get<History[]>(EXTENSION_NAME) ?? [];
     historyStack.unshift({ text: clipboardText });
 
     if (historyStack.length > completionItemCount) {
@@ -79,13 +71,13 @@ export function activate(context: vscode.ExtensionContext) {
       }
     }
 
-    await context.workspaceState.update(
-      workspaceName,
+    await context.globalState.update(
+      EXTENSION_NAME,
       deduplicateClipboardHistory(historyStack),
     );
   });
 
-  registerCompletionProvider(context, triggerCharacter, workspaceName);
+  registerCompletionProvider(context, triggerCharacter);
 
   context.subscriptions.push(
     vscode.workspace.onDidChangeConfiguration(async (event) => {
@@ -98,14 +90,14 @@ export function activate(context: vscode.ExtensionContext) {
         }
 
         const historyStack =
-          context.workspaceState.get<History[]>(workspaceName) ?? [];
+          context.globalState.get<History[]>(EXTENSION_NAME) ?? [];
         if (historyStack.length > completionItemCount) {
           while (historyStack.length > completionItemCount) {
             historyStack.pop();
           }
 
-          await context.workspaceState.update(
-            workspaceName,
+          await context.globalState.update(
+            EXTENSION_NAME,
             deduplicateClipboardHistory(historyStack),
           );
         }
@@ -128,7 +120,7 @@ export function activate(context: vscode.ExtensionContext) {
           .get<string>('triggerCharacter');
         if (defaultTriggerCharacter) {
           triggerCharacter = defaultTriggerCharacter;
-          registerCompletionProvider(context, triggerCharacter, workspaceName);
+          registerCompletionProvider(context, triggerCharacter);
         }
       }
     }),
@@ -136,7 +128,7 @@ export function activate(context: vscode.ExtensionContext) {
       'clipboard-history.openClipboardHistory',
       async () => {
         const historyList =
-          context.workspaceState.get<History[]>(workspaceName) ?? [];
+          context.globalState.get<History[]>(EXTENSION_NAME) ?? [];
         if (!historyList.length) {
           vscode.window.showWarningMessage(
             vscode.l10n.t('No any content to select'),
@@ -173,7 +165,7 @@ export function activate(context: vscode.ExtensionContext) {
       'clipboard-history.clearClipboardHistory',
       async () => {
         const historyList =
-          context.workspaceState.get<History[]>(workspaceName) ?? [];
+          context.globalState.get<History[]>(EXTENSION_NAME) ?? [];
         if (!historyList.length) {
           vscode.window.showWarningMessage(
             vscode.l10n.t('No any content to select'),
@@ -196,8 +188,8 @@ export function activate(context: vscode.ExtensionContext) {
         const restHistoryList = historyList.filter(
           ({ text }) => !selectedTexts.includes(text),
         );
-        await context.workspaceState.update(
-          workspaceName,
+        await context.globalState.update(
+          EXTENSION_NAME,
           deduplicateClipboardHistory(restHistoryList),
         );
       },
