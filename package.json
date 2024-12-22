@@ -3,7 +3,7 @@
   "displayName": "Clipboard History",
   "description": "Clipboard history manager",
   "icon": "resources/logo.png",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "engines": {
     "vscode": "^1.74.3"
   },
