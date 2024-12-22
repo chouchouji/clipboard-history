@@ -36,12 +36,13 @@ function registerCompletionProvider(
           return;
         }
 
-        const completeItems = historyList.map(({ text }) => {
+        const completeItems = historyList.map(({ text }, index) => {
           return {
             ...new vscode.CompletionItem(
               text,
               vscode.CompletionItemKind.Method,
             ),
+            sortText: `${index}`,
             additionalTextEdits: [
               vscode.TextEdit.delete(new vscode.Range(prevPosition, position)),
             ],
