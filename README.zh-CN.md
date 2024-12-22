@@ -39,7 +39,7 @@ cmd+shift+v
 
 ## 国际化
 
-默认语言是 `英文`。如果你安装了 [chinese vscode extension](https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-zh-hans)，重启vscode，`clipboard history`插件会自动切换为中文。
+默认语言是 `英文`。如果你安装了 [chinese vscode extension](https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-zh-hans)，重启vscode，`Clipboard Keeper`插件会自动切换为中文。
 
 ## 反馈
 

@@ -8,7 +8,7 @@
 
 ## Features
 
-- 📝 &nbsp;Support showing recent clipboard history by trigger character or quick pick
+- 📝 &nbsp;Support displaying clipboard history by trigger character or quick pick
 - 📖 &nbsp;Support clearing clipboard history
 - 🌈 &nbsp;Support custom trigger character and count of clipboard history
 - 🌍 &nbsp;Support internationalization
@@ -39,7 +39,7 @@ cmd+shift+v
 
 ## Internationalization
 
-The default language is `english`. If you have added [chinese vscode extension](https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-zh-hans) in vscode extensions, the language of `clipboard history` extension will be changed to chinese automatically after restarting vscode.
+The default language is `english`. If you have added [chinese vscode extension](https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-zh-hans) in vscode extensions, the language of `Clipboard Keeper` extension will be changed to chinese automatically after restarting vscode.
 
 ## Feedback
 
