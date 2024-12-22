@@ -2,6 +2,9 @@
   <img src="./resources/logo.png" alt="logo" />
   <h1>Clipboard Keeper</h1>
   <p>用于管理剪切板历史的vscode拓展</p>
+  <p>
+    <a href="https://github.com/chouchouji/clipboard-history/blob/main/README.md">English Introduction</a>
+  </p>
 </div>
 
 ---

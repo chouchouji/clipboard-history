@@ -2,6 +2,9 @@
   <img src="./resources/logo.png" alt="logo" />
   <h1>Clipboard Keeper</h1>
   <p>A vscode extension used to manage clipboard history</p>
+  <p>
+    <a href="https://github.com/chouchouji/clipboard-history/blob/main/README.zh-CN.md">中文介绍</a>
+  </p>
 </div>
 
 ---
