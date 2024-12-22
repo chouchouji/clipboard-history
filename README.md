@@ -1,6 +1,6 @@
 <div align="center">
   <img src="./resources/logo.png" alt="logo" />
-  <h1>Clipboard History</h1>
+  <h1>Clipboard Keeper</h1>
   <p>A vscode extension used to manage clipboard history</p>
 </div>
 
