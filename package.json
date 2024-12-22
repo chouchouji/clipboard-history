@@ -39,6 +39,10 @@
       {
         "command": "clipboard-history.openClipboardHistory",
         "title": "%openClipboardHistory%"
+      },
+      {
+        "command": "clipboard-history.clearClipboardHistory",
+        "title": "%clearClipboardHistory%"
       }
     ],
     "configuration": {
@@ -75,6 +79,11 @@
       "editor/context": [
         {
           "command": "clipboard-history.openClipboardHistory",
+          "when": "true",
+          "group": "navigation"
+        },
+        {
+          "command": "clipboard-history.clearClipboardHistory",
           "when": "true",
           "group": "navigation"
         }

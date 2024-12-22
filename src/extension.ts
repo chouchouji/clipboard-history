@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import type { History } from './types';
+import { deduplicateClipboardHistory } from './utils';
 import ClipboardWatcher from './watch';
 
 const clipboardWatcher = new ClipboardWatcher();
@@ -36,19 +37,16 @@ function registerCompletionProvider(
           return;
         }
 
-        const completeItems = historyList.map(({ text }, index) => {
-          return {
-            ...new vscode.CompletionItem(
-              text,
-              vscode.CompletionItemKind.Method,
-            ),
+        const completeItems: vscode.CompletionItem[] = historyList.map(
+          ({ text }, index) => ({
+            label: text,
+            kind: vscode.CompletionItemKind.Method,
             sortText: `${index}`,
             additionalTextEdits: [
               vscode.TextEdit.delete(new vscode.Range(prevPosition, position)),
             ],
-          };
-        });
-
+          }),
+        );
         return completeItems;
       },
     },
@@ -75,11 +73,16 @@ export function activate(context: vscode.ExtensionContext) {
       context.workspaceState.get<History[]>(workspaceName) ?? [];
     historyStack.unshift({ text: clipboardText });
 
-    while (historyStack.length > completionItemCount) {
-      historyStack.pop();
+    if (historyStack.length > completionItemCount) {
+      while (historyStack.length > completionItemCount) {
+        historyStack.pop();
+      }
     }
 
-    await context.workspaceState.update(workspaceName, historyStack);
+    await context.workspaceState.update(
+      workspaceName,
+      deduplicateClipboardHistory(historyStack),
+    );
   });
 
   registerCompletionProvider(context, triggerCharacter, workspaceName);
@@ -101,7 +104,10 @@ export function activate(context: vscode.ExtensionContext) {
             historyStack.pop();
           }
 
-          await context.workspaceState.update(workspaceName, historyStack);
+          await context.workspaceState.update(
+            workspaceName,
+            deduplicateClipboardHistory(historyStack),
+          );
         }
       }
     }),
@@ -161,6 +167,39 @@ export function activate(context: vscode.ExtensionContext) {
         activeTextEditor.edit((editBuilder) => {
           editBuilder.insert(cursorPosition, selectedText);
         });
+      },
+    ),
+    vscode.commands.registerCommand(
+      'clipboard-history.clearClipboardHistory',
+      async () => {
+        const historyList =
+          context.workspaceState.get<History[]>(workspaceName) ?? [];
+        if (!historyList.length) {
+          vscode.window.showWarningMessage(
+            vscode.l10n.t('No any content to select'),
+          );
+          return;
+        }
+
+        const selectedTexts = await vscode.window.showQuickPick(
+          historyList.map((history) => history.text),
+          {
+            placeHolder: vscode.l10n.t('Please choose one or more to delete'),
+            canPickMany: true,
+          },
+        );
+        // cancel select texts
+        if (selectedTexts === undefined) {
+          return;
+        }
+
+        const restHistoryList = historyList.filter(
+          ({ text }) => !selectedTexts.includes(text),
+        );
+        await context.workspaceState.update(
+          workspaceName,
+          deduplicateClipboardHistory(restHistoryList),
+        );
       },
     ),
   );

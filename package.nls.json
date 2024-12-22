@@ -1,7 +1,8 @@
 {
   "openClipboardHistory": "Open Clipboard History",
+  "clearClipboardHistory": "Clear Clipboard History",
   "triggerCharacter": "The character that triggers the completion dropdown.",
   "clipboardHistory": "Clipboard History",
-  "pollingInterval": "Polling Interval (ms)",
+  "pollingInterval": "The polling interval for checking if the pasted text has been updated, with the default value, minimum value, and maximum value being 500ms, 200ms, and 1 day, respectively.",
   "completionItemCount": "The number of clipboard items to store. The default value is 10, with a minimum of 1 and a maximum of 100."
 }

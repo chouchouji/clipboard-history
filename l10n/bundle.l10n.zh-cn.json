@@ -2,5 +2,6 @@
   "No any applicable workspace name": "不是有效的工作区",
   "No any content to select": "没有内容可粘贴",
   "Please choose one to paste": "请选择要粘贴的内容",
-  "No active editor found": "没有打开的编辑器。"
+  "No active editor found": "没有打开的编辑器。",
+  "Please choose one or more to delete": "请选择要删除的一或多项"
 }
