@@ -81,9 +81,9 @@ export function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(
     vscode.workspace.onDidChangeConfiguration(async (event) => {
-      if (event.affectsConfiguration('clipboard-history.completionItemCount')) {
+      if (event.affectsConfiguration(`${EXTENSION_NAME}.completionItemCount`)) {
         const defaultCompletionItemCount = vscode.workspace
-          .getConfiguration('clipboard-history')
+          .getConfiguration(EXTENSION_NAME)
           .get<number>('completionItemCount');
         if (defaultCompletionItemCount) {
           completionItemCount = defaultCompletionItemCount;
@@ -104,9 +104,9 @@ export function activate(context: vscode.ExtensionContext) {
       }
     }),
     vscode.workspace.onDidChangeConfiguration((event) => {
-      if (event.affectsConfiguration('clipboard-history.pollingInterval')) {
+      if (event.affectsConfiguration(`${EXTENSION_NAME}.pollingInterval`)) {
         const pollingInterval = vscode.workspace
-          .getConfiguration('clipboard-history')
+          .getConfiguration(EXTENSION_NAME)
           .get<number>('pollingInterval');
         if (pollingInterval) {
           clipboardWatcher.setInterval(pollingInterval);
@@ -114,9 +114,9 @@ export function activate(context: vscode.ExtensionContext) {
       }
     }),
     vscode.workspace.onDidChangeConfiguration((event) => {
-      if (event.affectsConfiguration('clipboard-history.triggerCharacter')) {
+      if (event.affectsConfiguration(`${EXTENSION_NAME}.triggerCharacter`)) {
         const defaultTriggerCharacter = vscode.workspace
-          .getConfiguration('clipboard-history')
+          .getConfiguration(EXTENSION_NAME)
           .get<string>('triggerCharacter');
         if (defaultTriggerCharacter) {
           triggerCharacter = defaultTriggerCharacter;
