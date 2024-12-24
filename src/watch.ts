@@ -14,7 +14,7 @@ export default class ClipboardWatcher {
       try {
         const clipboardText = await vscode.env.clipboard.readText();
 
-        if (clipboardText !== this.lastClipboardText) {
+        if (clipboardText && clipboardText !== this.lastClipboardText) {
           this.lastClipboardText = clipboardText;
           await cb(clipboardText);
         }
