@@ -1,3 +1,12 @@
+## [0.0.4](https://github.com/chouchouji/clipboard-history/compare/v0.0.3...v0.0.4) (2024-12-24)
+
+
+### Performance Improvements
+
+* skip empty text copy ([c441084](https://github.com/chouchouji/clipboard-history/commit/c441084a76187d2ebfb2e51d8710663df7c3a9d4))
+
+
+
 ## [0.0.3](https://github.com/chouchouji/clipboard-history/compare/v0.0.2...v0.0.3) (2024-12-22)
 
 
